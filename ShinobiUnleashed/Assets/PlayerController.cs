@@ -33,14 +33,19 @@ public class PlayerController : MonoBehaviour
 	void Update () 
     {
         Debug.Log(playersHealth);
+
+        if(isGrounded == true && chi <= 2)
+        {
+            chi = 3;
+        }
 	}
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "TestGround")
-        {
-            isGrounded = true;
-        }
+       if (other.tag == "TestGround")
+       {
+           isGrounded = true;
+       }
         if(other.tag == "LeftSide")
         {
             playerOnLeft = true;
@@ -57,11 +62,14 @@ public class PlayerController : MonoBehaviour
       {
           playerOnRightWall = true;
       }
-       //if(other.tag == "Wall")
-       //{
-       //    playerOnWall = true;
-       //}
+    }
 
+    void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "TestGround" && chi <= 2)
+        {
+            isGrounded = true;
+        }
     }
 
     void OnTriggerExit(Collider other)
@@ -86,10 +94,7 @@ public class PlayerController : MonoBehaviour
       {
           playerOnRightWall = false;
       }
-       //if (other.tag == "Wall")
-       //{
-       //    playerOnWall = false;
-       //}
+       
     }
     void FixedUpdate()
     {
@@ -116,18 +121,17 @@ public class PlayerController : MonoBehaviour
        {
            player.AddForce(transform.right * moveSpeed);
        }
-      
-      
        //Jump
         if(Input.GetKeyDown(KeyCode.Space) && chi > 0)
         {
             player.AddForce(transform.up * jumpStrength);
             chi -= 1;
         }
-        if(isGrounded == true)
-        {
-            chi = 2;
-        }
+       // if(isGrounded == true && chi <= 2)
+       // {
+       //     chi = 3;
+       // }
+
        //if (Input.GetKey(KeyCode.T))
        //{
        //    player.MovePosition(transform.position + transform.right * 1);
